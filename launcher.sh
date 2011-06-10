@@ -166,4 +166,7 @@ if [ x`echo "x$1" | sed -e "s/^x-psn_.*//"` == x ]; then
     shift 1
 fi
 
-$EXEC "$bundle_contents/MacOS/$name-bin" $* $EXTRA_ARGS
+# have to cd to the app since some of the paths are hardcoded relitive to the application root.
+cd $bundle_contents/
+./"MacOS/$name-bin" $* $EXTRA_ARGS
+#$EXEC "$bundle_contents/MacOS/$name-bin" $* $EXTRA_ARGS
