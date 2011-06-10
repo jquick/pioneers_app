@@ -1,0 +1,56 @@
+title CentralEurope
+domestic-trade 
+num-players 4
+victory-points 40
+num-roads 80
+num-settlements 5
+num-cities 30
+num-ships 20
+resource-count 30
+develop-road 30
+develop-monopoly 2
+develop-plenty 30
+develop-soldier 30
+develop-market 5
+develop-chapel 5
+develop-university 5
+develop-governor 5
+chits 8,9,2,3,2,2,12,2,10,5,6,3,8,3,12,5,9,10,8,4,11,11,4,12,2,12,5,9,8,2,3,9,10,6,4,5,6,2,10,8,4,9,10,11,12,2,9,2,3,3,4,5,6,8,9,10,11,12,2,2,2,2,6,12,5,6,8,9,3,10,11,4,2,2,3,4,5,6,8,9,11,10,11,12,2,2,3,10,4,2,5,6,8,9,10,11,12,2,2,4,5,4,6,8,9,10,11,2,2,3,4,5,6,9,10,11,11,12,2,6,4,5,6,3,8,12,3,2,3,2,3,4,8,9,10,11,12,5,10,2,6,2,4,8,9,10,11,12,5,2,5,6,5,6,3,9,8,2,11,12,2,11,12,4,8
+map
+s,f0,d1+,f2,sg3,s,s,s,s,s,s,s,sg5,f3,d4+,f5,d6+,f7,d8+,d9+,f10,d11+,s,d12+,d13+
+s,f14,f15,f16,s,s,s,s,s,s,s,s,f17,d18+,f19,s,d20+,f21,d22+,d23+,f24,sg0,f25,f26,d27+
+s,d28+,f29,s,s,s,s,s,s,s,s,s,f30,d31+,f32,s,d33+,f34,d35+,f36,d37+,s,d38+,d39+,f40
+s,s,s,s,s,s,s,s,s,s,s,f41,d42+,f43,f44,s,f45,d46+,s,f47,d48+,f49,d50+,f51,d52+
+s,s,s,s,s,s,f53,s,s,s,s,s,f54,d55+,f56,s,s,f57,s,d58+,f59,d60+,f61,d62+,d63+
+s,s,s,s,s,s,s,s,s,s,s,f64,d65+,f66,d67+,s,s,s,f68,d69+,f70,d71+,f72,d73+,d74+
+s,s,s,s,s,s,s,f75,s,s,s,s,s,s,d76+,d77+,s,s,d78+,d79+,d80+,d81+,d82+,d83+,f84
+s,s,s,s,sg5,s,s,f85,s,sg5,s,d86+,f87,s,f88,s,s,d89+,f90,f91,d92+,f93,d94+,f95,d96+
+s,s,s,s,s,f97,s,f98,d99+,s,f100,s,f101,s,s,s,s,d102+,f103,d104+,f105,d106+,d107+,d108+,s
+s,s,s,s,d109+,f110,s,f111,s,s,s,s,f112,s,s,f113,d114+,d115+,d116+,f117,d118+,f119,d120+,f121,d122+
+s,s,s,s,f123,f124,s,f125,d126+,s,s,f127,d128+,f129,s,f130,d131+,f132,d133+,d134+,f135,d136+,f137,d138+,d139+
+s,s,s,s,s,s,f140,d141+,f142,s,f143,d144+,f145,d146+,d147+,f148,d149+,d150+,d151+,d152+,f153,d154+,f155,f156,d157+
+s,s,s,s,s,s,sg1,s,s,s,f158,d159+,f160,d161+,f162,d163+,d164+,f165,d166+,f167,d168+,f169,d170+,d171+,f172
+s,s,s,s,s,s,d173+,f174,d175+,d176+,f177,f178,d179+,f180,f181,d182+,f183,d184+,f185,d186+,f187,d188+,f189,d190+,d191+
+s,s,s,s,s,s,f192,d193+,f194,d195+,f196,d197+,f198,d199+,f200,d201+,d202+,d203+,d204+,d205+,f206,d207+,d208+,s,f209
+s,s,s,s,s,s,s,d210+,f211,d212+,f213,d214+,f215,d216+,d217+,f218,d219+,d220+,f221,d222+,f223,s,s,sg1,s
+s,s,s,s,s,s,s,f224,d225+,f226,d227+,d228+,f229,d230+,d231+,f232,d233+,f234,d235+,f236,d237+,d238+,s,s,s
+s,s,s,s,s,s,s,d239+,f240,d241+,f242,d243+,f244,d245+,s,d246+,f247,d248+,d249+,d250+,d251+,f252,s,s,s
+s,s,s,s,f253,d254+,f255,d256+,d257+,f258,d259+,f260,d261+,d262+,d263+,s,f264,d265+,d266+,f267,f268,d269+,s,s,s
+s,s,s,f270,d271+,d272+,f273,d274+,s,s,s,s,s,f275,f276,s,s,f277,d278+,d279+,d280+,f281,s,d282+,f283
+s,s,s,f284,d285+,f286,d287+,d288+,f289,s,s,sg5,d290+,s,f291,d292+,s,s,f293,d294+,f295,s,s,f296,f297
+s,s,s,d298+,f299,d300+,f301,s,s,sg4,s,f302,d303+,s,d304+,f305,s,s,f306,d307+,s,f308,d309+,f310,f311
+s,s,s,sg0,f312,d313+,f314,s,s,f315,s,s,f316,s,s,f317,d318+,s,f319,d320+,f321,s,f322,d323+,f324
+s,s,s,s,s,s,s,s,s,sg5,f325,s,s,f326,d327+,s,f328,s,sg0,f329,d330+,s,sg2,s,s
+s,s,s,s,f331,f332,s,s,s,s,f333,d334+,s,s,s,s,s,s,s,s,f335,s,s,s,s
+.
+# CentralEurope
+# created 10/2003
+# by Martin Brotzeller <lorindol@cip.informatik.uni-wuerzburg.de>
+
+# This is a map of europe, cut down a bit at the eastern part because it
+# did not fit with the 0.7/0.8 servers. The only resource available is
+# grain, the only types of ports are grain ports. The reason, obviously, 
+# is to conquer a large-enough part of europe.
+
+# Strategy: Grab a harbor from the start of the game, and look out for
+# an area where you can connect fast to build your empire.

@@ -1,0 +1,33 @@
+title X Marks the Spot
+domestic-trade
+num-players 3
+victory-points 18
+num-roads 30
+num-ships 20
+num-settlements 7
+num-cities 5
+resource-count 24
+develop-road 4
+develop-monopoly 2
+develop-plenty 1 
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 15
+use-pirate
+
+chits 4,9,3,6,6,10,2,5,11,8,9,8,4,12,10,4,9,3,6,6,4,9,3,6,6,10,2,5,11,8,9,8,4,12,10,4,9,3,6,6,8,4,12,10,4,9,3,6,6
+map
+s,s,s,s,s,s,s,s,s,s,s,s
+ s,p0,t1,s,s,h2,t3,s,s,s,s,s
+s,t4,t5,s,s,h6,h7,p8,p9,f10,s,s
+ s,t11,p12,s,s,s,p13,f14,f15,m16,s,s
+s,p17,p18,s,f19,p20,p21,h22,h23,m24,s,s
+ s,m25,m26,s,f27,f28,p29,s,s,f30,m31,s
+s,m49,d32,h33,h34,m35,m36,m37,s,s,s,s
+ s,m38,h39,h40,f41,s,s,f42,t43,t44,s,s
+s,s,s,p45,p46,s,s,t47,t48,s,s,s
+ s,s,s,s,s,s,s,s,s,s,s
+.

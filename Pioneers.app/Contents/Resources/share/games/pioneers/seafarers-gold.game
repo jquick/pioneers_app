@@ -1,0 +1,33 @@
+title Seafarers with gold
+strict-trade
+domestic-trade
+num-players 4
+victory-points 10
+num-roads 15
+num-ships 15
+num-settlements 5
+num-cities 4
+resource-count 19
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 13
+use-pirate
+
+chits 5,2,6,3,8,12,9,12,11,4,8,10,2,4,5,6,3,11,5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11,12,6
+map
+s,s,sw5,s,s,sg4,s,s?5,s
+s,g0+,m1,h2,h3,h4,f5,g6+,s
+s,s?0,t7,m8,p9,f10,t11,p12,sw3
+s,f13,s?1,s,s,sg2,s,m14,s
+s,sb1,s,f15,m16,f17,p18,s,so2
+s,m19,t20,t21,f22,p23,m24,h25,s
+s,sb0,t26,p27,d28,h29,f30,f31,s
+s,t32,p33,h34,m35,p36,m37,h38,s?3
+s,s,s,sl1,s,s,s?2,s,s
+.
