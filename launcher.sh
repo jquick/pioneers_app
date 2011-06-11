@@ -24,15 +24,14 @@ bundle_etc="$bundle_res"/etc
 export DYLD_LIBRARY_PATH="$bundle_lib"
 export XDG_CONFIG_DIRS="$bundle_etc"/xdg
 export XDG_DATA_DIRS="$bundle_data"
-export XDG_CONFIG_HOME="$bundle_data"
-export XDG_DATA_HOME="$bundle_data"/games:"$bundle_data"/pixmaps
-export XDG_PIONEERS_DATADIR="$bundle_data"
+export DATADIR_ENV="$bundle_data"
+export XDG_DATA_HOME="$bundle_data"/games
 export GTK_DATA_PREFIX="$bundle_res"
 export GTK_EXE_PREFIX="$bundle_res"
 export GTK_PATH="$bundle_res"
 
 export GTK2_RC_FILES="$bundle_etc/gtk-2.0/gtkrc"
-export GDK_PIXBUF_MODULE_FILE="$bundle_lib/gdk-pixbuf-2.0/2.10.0/loaders.cache"
+export GDK_PIXBUF_MODULE_FILE="$bundle_etc/gtk-2.0/gdk-pixbuf.loaders"
 export PANGO_RC_FILE="$bundle_etc/pango/pangorc"
 
 APP=name
@@ -101,32 +100,8 @@ fi
 #5-character locale to avoid the "Locale not supported by C library"
 #warning from Gtk -- even though Gtk will translate with a
 #two-character code.
-if test -n $LANG; then 
-#If the language code matches the applelocale, then that's the message
-#locale; otherwise, if it's longer than two characters, then it's
-#probably a good message locale and we'll go with it.
-    if test $LANG == ${APPLELOCALE:0:5} -o $LANG != ${LANG:0:2}; then
-	export LC_MESSAGES=$LANG
-#Next try if the Applelocale is longer than 2 chars and the language
-#bit matches $LANG
-    elif test $LANG == ${APPLELOCALE:0:2} -a $APPLELOCALE > ${APPLELOCALE:0:2}; then
-	export LC_MESSAGES=${APPLELOCALE:0:5}
-#Fail. Get a list of the locales in $PREFIX/share/locale that match
-#our two letter language code and pick the first one, special casing
-#english to set en_US
-    elif test $LANG == "en"; then
-	export LC_MESSAGES="en_US"
-    else
-	LOC=`find $PREFIX/share/locale -name $LANG???`
-	for L in $LOC; do 
-	    export LC_MESSAGES=$L
-	done
-    fi
-else
-#All efforts have failed, so default to US english
     export LANG="en_US"
     export LC_MESSAGES="en_US"
-fi
 CURRENCY=`echo $APPLELOCALE |  sed -En 's/.*currency=([[:alpha:]]+).*/\1/p'`
 if test "x$CURRENCY" != "x"; then 
 #The user has set a special currency. Gtk doesn't install LC_MONETARY files, but Apple does in /usr/share/locale, so we're going to look there for a locale to set LC_CURRENCY to.
@@ -166,7 +141,4 @@ if [ x`echo "x$1" | sed -e "s/^x-psn_.*//"` == x ]; then
     shift 1
 fi
 
-# have to cd to the app since some of the paths are hardcoded relitive to the application root.
-cd $bundle_contents/
-./"MacOS/$name-bin" $* $EXTRA_ARGS
-#$EXEC "$bundle_contents/MacOS/$name-bin" $* $EXTRA_ARGS
+$EXEC "$bundle_contents/MacOS/$name-bin" $* $EXTRA_ARGS

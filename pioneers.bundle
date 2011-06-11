@@ -75,9 +75,6 @@
 
 <!-- Starting with 2.24, gdk-pixbuf installs into its own directory. -->
   <binary>
-    ${prefix}/lib/gdk-pixbuf-2.0/${pkg:${gtk}:gtk_binary_version}/*.cache
-  </binary>
-  <binary>
     ${prefix}/lib/gdk-pixbuf-2.0/${pkg:${gtk}:gtk_binary_version}/loaders/*.so
   </binary>
   <!-- Translation filenames, one for each program or library that you
@@ -95,17 +92,14 @@
        "${bundle}", which refers to the bundle root directory.
   -->
   <data>
-    ${prefix}/share/games/pioneers
-  </data>
-  <data>
-    ${prefix}/share/pixmaps/pioneers
+    ${prefix}/share/games
   </data>
 
   <!-- Copy in the themes data. You may want to trim this to save space
-       in your bundle. -->
+       in your bundle. >
   <data>
     ${prefix}/share/themes
-  </data>
+  </data -->
 
   <!-- Copy icons. Note that the .icns file is an Apple format which
        contains up to 4 sizes of icon. You can use
