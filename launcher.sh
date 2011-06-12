@@ -25,10 +25,19 @@ export DYLD_LIBRARY_PATH="$bundle_lib"
 export XDG_CONFIG_DIRS="$bundle_etc"/xdg
 export XDG_DATA_DIRS="$bundle_data"
 export DATADIR_ENV="$bundle_data"
-export XDG_DATA_HOME="$bundle_data"/games
 export GTK_DATA_PREFIX="$bundle_res"
 export GTK_EXE_PREFIX="$bundle_res"
 export GTK_PATH="$bundle_res"
+
+export XDG_DATA_HOME="$bundle_data"/games
+export XDG_CONFIG_HOME=""
+export XDG_RUNTIME_DIR="$bundle_data"
+export PIONEERS_DIR="$bundle_data"/games/pioneers
+export PIONEERS_SERVER_CONSOLE="$bundle_data"/games/pioneers-server-console
+export APP_ROOT="$bundle_contents"/MacOS
+export APP_CLIENT="$bundle_contents"/MacOS/pioneers-client
+export APP_SERVER="$bundle_contents"/MacOS/pioneers-server-gtk
+export APP_AI="$bundle_contents"/MacOS/pioneersai
 
 export GTK2_RC_FILES="$bundle_etc/gtk-2.0/gtkrc"
 export GDK_PIXBUF_MODULE_FILE="$bundle_etc/gtk-2.0/gdk-pixbuf.loaders"

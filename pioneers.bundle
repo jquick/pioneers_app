@@ -50,7 +50,7 @@
   -->
   <plist>${project}/Info.plist</plist>
 
-  <main-binary>${prefix}/bin/pioneers</main-binary>
+  <main-binary>${prefix}/bin/starter</main-binary>
 
   <!-- Copy in GTK+ modules.  Note the ${gtkdir} macro, which expands
        to the correct library subdirectory for the specified gtk
@@ -92,9 +92,11 @@
        "${bundle}", which refers to the bundle root directory.
   -->
   <data>
+    ${prefix}/share/pixmaps
+  </data>
+  <data>
     ${prefix}/share/games
   </data>
-
   <!-- Copy in the themes data. You may want to trim this to save space
        in your bundle. >
   <data>
@@ -109,6 +111,9 @@
     ${project}/pioneers.icns
   </data>
 
+  <data dest="${bundle}/Contents/MacOS">
+    ${prefix}/bin/pioneer*
+  </data>
   <!-- This is where theme commands go. You can copy them in from your
        theme of choice if they provide and example, or you can just
        change the source path. -->
