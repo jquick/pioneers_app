@@ -1,5 +1,9 @@
 This is a port of Pioneers using GTK-OSX (no x11 or ports). All Credit goes to original coders found at: https://sourceforge.net/projects/pio/
 
+### Requires
+
+1. Intel Mac v10.6 or >
+
 ### Install
 
 Just put the Pioneers.app in your /Applications folder! (you dont need any of the other files in the repo)
