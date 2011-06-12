@@ -1,0 +1,84 @@
+title Crane Island
+num-players 4
+victory-points 16
+domestic-trade
+num-roads 15
+num-ships 15
+num-settlements 6
+num-cities 4
+num-bridges 0
+resource-count 20
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 13
+chits 8,6,4,10,6,5,10,9,2,4,4,11,5,3,9,10,8,3,12,4,4,3,9,5,8,6,8,9,6,5,
+map
+s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,
+sl0 ,m0  ,s   ,t1  ,h2  ,t3  ,s   ,m4  ,sg3 ,-   ,-   ,
+s   ,s   ,s   ,t5  ,f6  ,p7  ,f8  ,s   ,s   ,s   ,
+s   ,s   ,f9  ,s   ,p10 ,s   ,t11 ,s   ,s   ,-   ,-   ,
+s   ,s   ,h12 ,m13 ,t14 ,h15 ,f16 ,p17 ,s   ,s   ,
+s   ,s   ,s?2 ,f18 ,s   ,p19 ,s?1 ,s   ,s   ,-   ,-   ,
+s   ,s   ,s   ,h20 ,p21 ,t22 ,f23 ,s   ,s   ,s   ,
+s   ,s   ,s   ,d24 ,d25 ,d26 ,s   ,s   ,s   ,-   ,-   ,
+sw0 ,f27 ,m28 ,s   ,p29 ,t30 ,s   ,m31 ,h32 ,sb3 ,
+s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,s   ,-   ,-   ,
+.
+nosetup 6 8 5
+nosetup 0 1 5
+nosetup 7 7 4
+nosetup 7 8 4
+nosetup 7 7 5
+nosetup 8 7 4
+nosetup 6 1 5
+nosetup 1 7 4
+nosetup 8 8 4
+nosetup 7 8 5
+nosetup 1 7 5
+nosetup 2 7 4
+nosetup 1 8 4
+nosetup 8 8 5
+nosetup 2 8 4
+nosetup 1 8 5
+nosetup 7 0 4
+nosetup 1 0 4
+nosetup 2 8 5
+nosetup 0 7 4
+nosetup 7 1 4
+nosetup 7 0 5
+nosetup 8 0 4
+nosetup 1 1 4
+nosetup 1 0 5
+nosetup 2 0 4
+nosetup 0 7 5
+nosetup 6 7 4
+nosetup 7 1 5
+nosetup 1 1 5
+nosetup 0 8 5
+nosetup 6 7 5
+
+# crane_island.game
+# Copyright 2005 Yusei <yusei@ragondux.com>
+# v1.0, added to Pioneers 2005-04-09
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Please provide some feedback ;)

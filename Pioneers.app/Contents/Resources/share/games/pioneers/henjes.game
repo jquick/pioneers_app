@@ -1,0 +1,36 @@
+title SmallEurope
+num-players 4
+victory-points 18
+domestic-trade
+num-roads 20
+num-ships 15
+num-settlements 8 
+num-cities 6
+num-bridges 0
+resource-count 20
+develop-road 4
+develop-monopoly 4
+develop-plenty 4
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 15
+chits 2,5,4,3,6,3,8,11,10,11,9,12
+map
+s,g28+,p2,s,s,s,s,m5,t4,t3,h6,t20
+s,s?1,s,s,s,s,m8,t9,t10,h11,t21,g13+
+s,s,s,s,s,m14,m15,t16,sl0,t17,f18,t24
+s,s,p7,s,s,s,t31,s,t22,f36,h19,t25
+s,s,sw0,p26,s,p53,sl5,s,t1,h35,t30,f12
+s,s,s?5,s,s?5,p32,t33,h34,t29,p44,h37,p38
+s,s,t39,t45,f41,t42,f51,t23,f40,m60,m47,f85
+s,s,h49,f50,h46,t55,t27,m54,f52,p56,m67,t58
+s,m59,m43,m61,p62,m73,m64,m68,f79,h57,m66,s
+f69,t70,h71,f72,s,s,f63,s,m48,p75,s,s
+s,f76,f77,f78,sg2,s,s,f65,s,f80,t81,m74
+s,s,s,s,s,g83+,s,s,s,s?1,d84,g82+
+.
+# created 11/2003
+# by Robert Henjes <robert.henjes@web.de>

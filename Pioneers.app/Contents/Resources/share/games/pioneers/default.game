@@ -1,0 +1,29 @@
+title Default
+random-terrain
+strict-trade
+domestic-trade
+num-players 4
+victory-points 10
+num-roads 15
+num-settlements 5
+num-cities 4
+resource-count 19
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 13
+chits 5,2,6,3,8,10,9,12,11,4,8,10,9,4,5,6,3,11
+map
+-,-,sw5,s,s?4,s
+-,s,t8,p7,f6,sg4
+-,s?0,h9,m16,h15,p5,s
+s,d10,t17,f18,t14,f4,sl3
+-,s?0,h11,p12,p13,m3,s
+-,s,m0,f1,t2,s?2
+-,-,so1,s,sb2,s
+.

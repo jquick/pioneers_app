@@ -1,0 +1,32 @@
+title Star
+domestic-trade
+num-players 2
+victory-points 8
+num-roads 15
+num-settlements 4
+num-cities 5
+resource-count 24
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 10
+chits 2, 12, 3, 11, 4, 10, 5, 9, 6, 8, 12, 11, 10, 9, 8, 6, 5, 4, 3, 2, 8, 9, 10, 11, 12, 2
+map
+-
+ -,-,m1,-,-,-,-,t2,-,-
+-,-,-,f3,-,-,-,p4,-,-
+ -,-,-,h5,-,-,h6,-,-,-
+-,-,-,-, t7,-,m8,-,-,-,-
+ -,-,-,-, p9,f10,-,-,-,-,
+h11,f12,m13,p15,t16,d27+,h17,f18,m19,p20,t21
+ -,-,-,-,-,m22,-,-,-,-
+-,-,-,-,-,-,f23,-,-,-
+ -,-,-,-,-,-,h24,-,-,-
+-,-,-,-,-,-,-,t25,-,-
+ -,-,-,-,-,-,-,p26 -,-
+.

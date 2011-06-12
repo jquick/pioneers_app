@@ -1,0 +1,62 @@
+title La guerre de 100 ans
+num-players 4
+victory-points 16
+domestic-trade
+num-roads 40
+num-ships 40
+num-settlements 10
+num-cities 5
+resource-count 20
+develop-road 4
+develop-monopoly 4
+develop-plenty 4
+develop-chapel 2
+develop-university 2
+develop-governor 2
+develop-library 2
+develop-market 2
+develop-soldier 30
+use-pirate
+island-discovery-bonus 1
+
+chits 8,9,5,6,4,9,8,10,5,6,10,6,5,9,8,5,6,4,9,8,3,2,10,12,3,4,9,5,3,11,4,4,10,11,5,9,10,12,5,4,2,9,2,4,10,11,12,9,11,10,3,4,2,5
+map
+s   , s   , s   , t1  , t2  , t3  , t4  , p5  , h6  , h7  , h8  , p9  , p10 , p11 , f12 , f13 ,
+ s   , s   , s   , s   , p14 , p15 , t16 , p17 , f18 , p19 , f20 , t21 , t22 , f23 , f24 , s   ,
+s   , s   , s   , s   , s   , p25 , p26 , sw1 , f27 , p28 , h29 , f30 , p31 , f32 , f33 , sg3 ,
+ s   , s   , s   , p34 , s   , s   , s   , t35 , t36 , h37 , f38 , m39 , m40 , p41 , f42 , p43 ,
+s   , s   , s   , p44 , f45 , p46 , f47 , p48 , h49 , t50 , m51 , m52 , s?  , m53 , m54 , m55 ,
+ s   , p56 , t57 , t58 , m59 , h60 , f61 , f62 , h63 , t64 , s   , s   , s   , s   , sl  , s   ,
+s   , p65 , m66 , m67 , f68 , m69 , m70 , s?  , t71 , s   , s   , s   , s   , s   , s   , p72 ,
+ s   , t73 , sl  , p74 , p75 , sw  , p76 , s   , s   , s   , s   , s   , s   , s   , sb  , m77 ,
+s   , s   , s   , s   , s   , s   , s   , s   , s   , s   , s   , s   , s   , h78 , m79 , h80 ,
+ s   , s   , s   , s   , s   , s   , s   , s   , s   , p81 , h82 , t83 , sg0 , f84 , f85 , t86 ,
+s   , s   , s   , s   , s   , s   , s   , s   , s   , h87 , t88 , p89 , p90 , s   , t91 , p92 ,
+ s   , s   , s   , s   , s   , s   , s   , p93 , s   , m94 , f95 , f96 , f97 , s   , s   , p98 ,
+s   , s   , sl5 , s   , s   , s   , s   , m99 , s   , p100, f101, t102, f103, p104, f105, s?4 ,
+ m146, m106, t107, m108, s   , s   , so  , s   , s?5 , m109, p110, p111, t112, t113, p114, f115,
+p147, p116, h117, p118, f119, p120, f121, m122, m123, m124, f125, f126, t127, t128, t129, p130,
+ t148, t131, t132, h133, t134, t135, h136, t137, t138, f139, p140, f141, h142, p143, f144, f145,
+.
+
+# GuerreDe100ans.game
+# v1.0, 2/07/2003
+# v1.1, 2006-09-10 Added pirate and island-discovery
+#
+# Copyright 2003, 2006 LT-P <LT-P@LT-P.net>
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Please provide some feedback ;)

@@ -1,0 +1,27 @@
+title Square
+strict-trade
+num-players 2
+victory-points 8
+num-roads 15
+num-settlements 5
+num-cities 4
+resource-count 19
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 13
+chits 6,2,8,12,6,5,3,9,11,5,4,4,10,10,4,3,5,11,9,3,2,6,12,8,2
+map
+s,s,s,s,s,s,s
+s,m0,t1,p2,h3,f4,s
+s,m5,t6,p7,h8,f9,s
+s,m10,t11,p12,h13,f14,s
+s,m15,t16,p17,h18,f19,s
+s,m20,t21,p22,h23,f24,s
+s,s,s,s,s,s,s
+.

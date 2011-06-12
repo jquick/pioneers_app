@@ -1,0 +1,109 @@
+title Conquest w/ Ports
+num-players 4
+victory-points 16
+domestic-trade
+num-roads 20
+num-ships 16
+num-settlements 6
+num-cities 5
+resource-count 20
+develop-road 2
+develop-monopoly 2
+develop-plenty 2
+develop-chapel 1
+develop-university 1
+develop-governor 1
+develop-library 1
+develop-market 1
+develop-soldier 13
+use-pirate
+island-discovery-bonus 1
+
+chits 8, 9, 5, 6, 4, 9, 8, 10, 5, 6, 10, 6, 5, 9, 8, 5, 6, 4, 9, 8, 3, 2, 10, 12, 3, 4, 9, 5, 3, 11, 4, 4, 10, 11, 5, 9, 10, 12, 5, 4, 2, 9, 2, 4, 10, 11, 12, 9, 11, 10, 3, 4, 2, 5
+map
+-,  -,  s,  s,  s,  s,sw4,  s,  s,  s,  s,  s,  s
+  -,  s, h0,  s,  s,m20,f21,p22,h23,sg4,  s, f5,  s,
+-,  s, p1, f2,  s,t24,m25,  s,p26,m27,  s, t6, m7,  s,
+  s, t3, m4,s?5,f28,h29,h30,m31,t32,t33,  s, p8, h9,  s
+-,  s,  s,  s,t34,p35,f36,d54,t37,f38,m39,s?3,  s,  s
+  s,m10,h11,  s,m40,f41,m42,p43,h44,f45,  s,f15,t16,  s
+-,  s,p12,f13,sb0,h46,m47,  s,t48,h49,  s,m17,p18,  s
+  -,  s,t14,  s,  s,f50,p51,m52,h53,sl3,  s,h19,  s
+-,  -,  s,  s,  s,  s,so2,  s,  s,  s,  s,  s,  s
+.
+nosetup 10 1 4
+nosetup 2 0 4
+nosetup 10 1 5
+nosetup 1 2 5
+nosetup 1 3 4
+nosetup 2 1 4
+nosetup 2 0 5
+nosetup 10 2 5
+nosetup 1 4 4
+nosetup 1 3 5
+nosetup 10 3 5
+nosetup 1 5 4
+nosetup 1 4 5
+nosetup 11 0 4
+nosetup 10 5 4
+nosetup 0 3 5
+nosetup 1 5 5
+nosetup 11 0 5
+nosetup 11 1 4
+nosetup 2 2 4
+nosetup 2 1 5
+nosetup 10 5 5
+nosetup 1 6 5
+nosetup 11 1 5
+nosetup 11 2 4
+nosetup 2 2 5
+nosetup 2 3 4
+nosetup 10 6 5
+nosetup 0 5 5
+nosetup 1 7 5
+nosetup 11 2 5
+nosetup 11 3 4
+nosetup 2 4 4
+nosetup 2 3 5
+nosetup 3 0 4
+nosetup 10 7 5
+nosetup 11 3 5
+nosetup 11 4 4
+nosetup 2 5 4
+nosetup 2 4 5
+nosetup 12 0 4
+nosetup 11 4 5
+nosetup 11 5 4
+nosetup 2 6 4
+nosetup 2 5 5
+nosetup 3 1 4
+nosetup 11 6 4
+nosetup 12 1 4
+nosetup 11 5 5
+nosetup 2 6 5
+nosetup 2 7 4
+nosetup 3 2 4
+nosetup 11 7 4
+nosetup 11 6 5
+nosetup 12 2 4
+nosetup 2 7 5
+nosetup 3 2 5
+nosetup 11 7 5
+nosetup 12 2 5
+nosetup 12 3 4
+nosetup 3 4 4
+nosetup 12 3 5
+nosetup 12 4 4
+nosetup 3 5 4
+nosetup 3 6 4
+nosetup 12 4 5
+nosetup 12 5 4
+nosetup 12 6 4
+nosetup 12 5 5
+nosetup 3 6 5
+nosetup 13 2 4
+nosetup 12 6 5
+nosetup 13 4 4
+nosetup 1 1 4
+nosetup 1 2 4
+nosetup 1 1 5
