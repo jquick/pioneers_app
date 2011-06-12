@@ -1,0 +1,6 @@
+This is a port of Pioneers using GTK-OSX (no x11 or ports). All Credit goes to original coders found at port of pioneers off of https://sourceforge.net/projects/pio/
+
+### Install
+
+Just put the Pioneers.app in your /Applications folder! (you dont need any of the other files in the repo)
+
