@@ -5,6 +5,7 @@
 #include <string.h>`
 #include <unistd.h> /* for fork */
 #include <sys/types.h> /* for pid_t */
+#include <gtkosxapplication.h>
 
 /* Our new improved callback.  The data passed to this function
  * is printed to stdout. */
@@ -55,6 +56,8 @@ int main( int   argc,
     /* This is called in all GTK applications. Arguments are parsed
      * from the command line and are returned to the application. */
     gtk_init (&argc, &argv);
+
+GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
 
     /* Create a new window */
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);

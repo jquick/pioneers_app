@@ -98,10 +98,10 @@
     ${prefix}/share/games
   </data>
   <!-- Copy in the themes data. You may want to trim this to save space
-       in your bundle. >
+       in your bundle.-->
   <data>
-    ${prefix}/share/themes
-  </data -->
+    ${prefix}/share/themes/Mac
+  </data>
 
   <!-- Copy icons. Note that the .icns file is an Apple format which
        contains up to 4 sizes of icon. You can use
