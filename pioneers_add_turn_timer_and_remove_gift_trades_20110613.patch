@@ -1,0 +1,528 @@
+diff -urN pristine_pioneers//client/common/client.c pioneers-0.12.4//client/common/client.c
+--- pristine_pioneers//client/common/client.c	2010-12-29 10:14:12.000000000 -0500
++++ pioneers-0.12.4//client/common/client.c	2011-06-13 19:13:16.242288004 -0400
+@@ -34,6 +34,8 @@
+ #include "buildrec.h"
+ #include "quoteinfo.h"
+ 
++TURN_LENGTH_SECONDS = -1;
++
+ static enum callback_mode previous_mode;
+ GameParams *game_params;
+ static struct recovery_info_t {
+@@ -531,7 +533,7 @@
+  */
+ static gboolean global_unhandled(StateMachine * sm, gint event)
+ {
+-	gchar *str;
++	gchar *str, *ptr;
+ 
+ 	switch (event) {
+ 	case SM_NET_CLOSE:
+@@ -569,11 +571,19 @@
+ 		 * before the next protocol changing version of the game is
+ 		 * released.  Notify the client about it anyway. */
+ 		if (sm_recv(sm, "extension %S", &str)) {
+-			log_message(MSG_INFO,
+-				    "Ignoring extension used by server: %s\n",
+-				    str);
+-			g_free(str);
+-			return TRUE;
++			// hack to send the turn time limit to the client
++			if (ptr = strstr(str, "turn time limit is ")) {
++				ptr += strlen("turn time limit is ");
++				TURN_LENGTH_SECONDS  = atoi(ptr);
++				printf("yo dawg, %d from '%s'\n", TURN_LENGTH_SECONDS, str);
++				return TRUE;
++			} else {
++				log_message(MSG_INFO,
++						"Ignoring extension used by server: %s\n",
++						str);
++				g_free(str);
++				return TRUE;
++			}
+ 		}
+ 		/* we're receiving strange things */
+ 		if (sm_recv(sm, "%S", &str)) {
+diff -urN pristine_pioneers//client/common/client.h pioneers-0.12.4//client/common/client.h
+--- pristine_pioneers//client/common/client.h	2008-01-22 15:21:28.000000000 -0500
++++ pioneers-0.12.4//client/common/client.h	2011-06-13 16:05:18.592288003 -0400
+@@ -171,4 +171,5 @@
+ void turn_rolled_dice(gint player_num, gint die1, gint die2);
+ void turn_begin(gint player_num, gint turn_num);
+ 
++int TURN_LENGTH_SECONDS;
+ #endif
+diff -urN pristine_pioneers//client/gtk/callbacks.c pioneers-0.12.4//client/gtk/callbacks.c
+--- pristine_pioneers//client/gtk/callbacks.c	2008-01-22 15:21:28.000000000 -0500
++++ pioneers-0.12.4//client/gtk/callbacks.c	2011-06-13 18:31:12.222288000 -0400
+@@ -22,6 +22,8 @@
+ #include "frontend.h"
+ #include "histogram.h"
+ 
++extern int TURN_LENGTH_SECONDS;
++
+ static void frontend_network_status(const gchar * description)
+ {
+ 	gui_set_net_status(description);
+@@ -84,6 +86,8 @@
+ 
+ static void frontend_player_turn(gint player)
+ {
++	seconds_remaining = TURN_LENGTH_SECONDS;
++
+ 	gui_set_show_no_setup_nodes(FALSE);
+ 	player_show_current(player);
+ }
+diff -urN pristine_pioneers//client/gtk/frontend.h pioneers-0.12.4//client/gtk/frontend.h
+--- pristine_pioneers//client/gtk/frontend.h	2010-10-07 12:15:15.000000000 -0400
++++ pioneers-0.12.4//client/gtk/frontend.h	2011-06-13 15:27:08.222287997 -0400
+@@ -345,4 +345,7 @@
+ #define PIONEERS_PIXMAP_ORE "pioneers/ore.png"
+ #define PIONEERS_PIXMAP_WOOL "pioneers/wool.png"
+ 
++// turn timer
++int seconds_remaining;
++
+ #endif
+diff -urN pristine_pioneers//client/gtk/gui.c pioneers-0.12.4//client/gtk/gui.c
+--- pristine_pioneers//client/gtk/gui.c	2010-10-26 11:24:09.000000000 -0400
++++ pioneers-0.12.4//client/gtk/gui.c	2011-06-13 19:26:31.512288003 -0400
+@@ -40,6 +40,8 @@
+ #include "gtkbugs.h"
+ #include "audio.h"
+ 
++extern TURN_LENGTH_SECONDS;
++
+ static GtkWidget *preferences_dlg;
+ GtkWidget *app_window;		/* main application window */
+ 
+@@ -831,6 +833,113 @@
+ 	g_object_unref(chat_panel);
+ }
+ 
++static GtkWidget *turn_timer_widget = NULL;
++
++void update_turn_timer(void)
++{
++	static char time_remaining_string[15];
++	void frontend_state_idle(G_GNUC_UNUSED GuiEvent event); // prototype from interface.c
++
++	if(seconds_remaining == 1) {
++		// time's up noob!
++		seconds_remaining = 0;
++
++		if(callback_mode == MODE_TURN) {
++			gui_set_instructions("Time's up, your turn is now over.");
++			log_message(MSG_INFO, "%s's time has run out; their turn is now over.\n", player_name(current_player(), TRUE));
++			trade_finish();
++			quote_finish();
++			if(!have_rolled_dice()) {
++				cb_roll();
++				seconds_remaining = 1; // FIXME hack; wait for the roll event to resolve first
++			} else {
++				cb_end_turn();
++				set_gui_state(frontend_state_idle);
++			}
++		} else if(callback_mode == MODE_DOMESTIC) {
++			// end trading
++			trade_finish();
++			cb_end_trade();
++			seconds_remaining = 1; // FIXME hack; wait for current event to resolve first
++		} else if(callback_mode == MODE_ROBBER) {
++			// place robber in the corner
++			Hex *hex, *happyhex;
++			Map *map = callbacks.get_map();
++			int i, j;
++			for(i = 0; i < map->x_size; i++) {
++				for(j = 0; j < map->y_size; j++) {
++					hex = map_hex(map, i, j);
++					if(hex != NULL && can_robber_or_pirate_be_moved(hex)) {
++						happyhex = hex;
++					}
++				}
++			}
++
++			cb_place_robber(happyhex);
++			seconds_remaining = 1; // FIXME hack; wait for current event to resolve first
++		} else if(callback_mode == MODE_ROB) {
++			// pick the first valid player
++			int victim, i, numres;
++			Hex *hex = map_robber_hex(callbacks.get_map());
++			for (i = 0; i < 6; i++) {
++				numres = 0;
++
++				if ((hex->nodes[i]->owner != -1) && (hex->nodes[i]->owner != my_player_num())) {
++					numres = player_get(hex->nodes[i]->owner)->statistics[STAT_RESOURCES];
++				}
++
++				if (numres > 0) {
++					victim = hex->nodes[i]->owner;
++					break;
++				}
++			}
++
++			cb_rob(victim);
++			seconds_remaining = 1; // FIXME hack; wait for current event to resolve first
++		} else {
++			seconds_remaining = 1; // FIXME hack; wait for current event to resolve first
++		}
++	} else if(seconds_remaining > 0 && callback_mode != MODE_DISCARD) {
++		// count down, unless we're in discard mode
++		seconds_remaining--;
++	}
++
++	// render timer
++	if(seconds_remaining > 0) {
++		snprintf(time_remaining_string, 15, "<b>%02d:%02d</b>", seconds_remaining / 60, seconds_remaining % 60);
++		gtk_label_set_markup(GTK_LABEL(turn_timer_widget), time_remaining_string);
++		gtk_widget_queue_draw(turn_timer_widget);
++	} else {
++		gtk_label_set_markup(GTK_LABEL(turn_timer_widget), "<b>N/A</b>");
++		gtk_widget_queue_draw(turn_timer_widget);
++	}
++}
++
++static GtkWidget *timer_panel(void)
++{
++	GtkWidget *hbox;
++	GtkWidget *label;
++
++	hbox = gtk_hbox_new(FALSE, 2);
++	gtk_widget_show(hbox);
++
++	label = gtk_label_new(NULL);
++	gtk_label_set_markup(GTK_LABEL(label), "Turn Timer:  ");
++	gtk_widget_show(label);
++
++	if(turn_timer_widget == NULL) {
++		turn_timer_widget = gtk_label_new(NULL);
++		gtk_widget_show(turn_timer_widget);
++	}
++	update_turn_timer();
++	g_timeout_add(1000, (GSourceFunc) update_turn_timer, NULL);
++
++	gtk_box_pack_start(GTK_BOX(hbox), label, FALSE, TRUE, 0);
++	gtk_box_pack_start(GTK_BOX(hbox), turn_timer_widget, FALSE, TRUE, 0);
++
++	return hbox;
++}
++
+ static GtkWidget *build_main_interface(void)
+ {
+ 	GtkWidget *vbox;
+@@ -846,6 +955,8 @@
+ 	gtk_paned_pack1(GTK_PANED(hpaned), vbox, FALSE, TRUE);
+ 
+ 	gtk_box_pack_start(GTK_BOX(vbox),
++			   timer_panel(), FALSE, TRUE, 0);
++	gtk_box_pack_start(GTK_BOX(vbox),
+ 			   identity_build_panel(), FALSE, TRUE, 0);
+ 	gtk_box_pack_start(GTK_BOX(vbox),
+ 			   resource_build_panel(), FALSE, TRUE, 0);
+diff -urN pristine_pioneers//client/gtk/interface.c pioneers-0.12.4//client/gtk/interface.c
+--- pristine_pioneers//client/gtk/interface.c	2010-05-13 18:48:22.000000000 -0400
++++ pioneers-0.12.4//client/gtk/interface.c	2011-06-13 14:38:55.552288004 -0400
+@@ -46,7 +46,8 @@
+ 
+ static gboolean discard_busy = FALSE, robber_busy = FALSE;
+ 
+-static void frontend_state_idle(G_GNUC_UNUSED GuiEvent event)
++// make this non-static so gui.c can reference it
++void frontend_state_idle(G_GNUC_UNUSED GuiEvent event)
+ {
+ 	/* don't react on any event when idle. */
+ 	/* (except of course chat and name change events, but they are
+@@ -191,6 +192,9 @@
+ 
+ static void frontend_state_quote(GuiEvent event)
+ {
++	gint *noobs;
++	int is_anything_being_offered = 0, is_anything_being_asked = 0, i;
++
+ 	switch (event) {
+ 	case GUI_UPDATE:
+ 		frontend_gui_check(GUI_QUOTE_SUBMIT, can_submit_quote());
+@@ -198,8 +202,26 @@
+ 		frontend_gui_check(GUI_QUOTE_REJECT, can_reject_quote());
+ 		break;
+ 	case GUI_QUOTE_SUBMIT:
+-		cb_quote(quote_next_num(), quote_we_supply(),
+-			 quote_we_receive());
++		// block free quotes because they're stupid
++		noobs = quote_we_supply();
++		for(i = 0; i < NO_RESOURCE; i++) {
++			if(noobs[i] > 0) {
++				is_anything_being_offered = 1;
++				break;
++			}
++		}
++		noobs = quote_we_receive();
++		for(i = 0; i < NO_RESOURCE; i++) {
++			if(noobs[i] > 0) {
++				is_anything_being_asked = 1;
++				break;
++			}
++		}
++
++		if(is_anything_being_asked && is_anything_being_offered) {
++			cb_quote(quote_next_num(), quote_we_supply(),
++				 quote_we_receive());
++		}
+ 		return;
+ 	case GUI_QUOTE_DELETE:
+ 		cb_delete_quote(quote_current_quote()->var.d.quote_num);
+diff -urN pristine_pioneers//client/gtk/trade.c pioneers-0.12.4//client/gtk/trade.c
+--- pristine_pioneers//client/gtk/trade.c	2010-05-13 18:48:22.000000000 -0400
++++ pioneers-0.12.4//client/gtk/trade.c	2011-06-13 14:29:45.762288004 -0400
+@@ -90,9 +90,8 @@
+ 		if (we_supply_rows[idx].enabled)
+ 			have_we_supply = TRUE;
+ 	}
+-	/* don't require both supply and receive, for resources may be
+-	 * given away for free */
+-	return (have_we_receive || have_we_supply)
++	/* require both supply and receive, screw free stuff */
++	return have_we_receive && have_we_supply
+ 	    && can_trade_domestic()
+ 	    && (different_call || trade_since_selection_changed);
+ }
+diff -urN pristine_pioneers//common/game.c pioneers-0.12.4//common/game.c
+--- pristine_pioneers//common/game.c	2010-10-20 15:01:12.000000000 -0400
++++ pioneers-0.12.4//common/game.c	2011-06-13 19:09:28.162288003 -0400
+@@ -76,7 +76,8 @@
+ 	{PARAM_V(develop-market, PARAM_INT, num_develop_type[DEVEL_MARKET])},
+ 	{PARAM_V(develop-soldier, PARAM_INT, num_develop_type[DEVEL_SOLDIER])},
+ 	{PARAM_V(use-pirate, PARAM_BOOL, use_pirate)},
+-	{PARAM_V(island-discovery-bonus, PARAM_INTLIST, island_discovery_bonus)}
++	{PARAM_V(island-discovery-bonus, PARAM_INTLIST, island_discovery_bonus)},
++	{PARAM_V(turn-time, PARAM_INT, turn_time)}
+ };
+ /* *INDENT-ON* */
+ 
+diff -urN pristine_pioneers//common/game.h pioneers-0.12.4//common/game.h
+--- pristine_pioneers//common/game.h	2010-10-20 15:01:12.000000000 -0400
++++ pioneers-0.12.4//common/game.h	2011-06-13 17:17:00.722288003 -0400
+@@ -72,6 +72,7 @@
+ 	gboolean quit_when_done;	/* server quits after someone wins *//* Not in game_params[] */
+ 	gboolean use_pirate;	/* is there a pirate in this game? */
+ 	GArray *island_discovery_bonus;	/* list of VPs for discovering an island */
++	gint turn_time;
+ } GameParams;
+ 
+ typedef struct {
+diff -urN pristine_pioneers//common/gtk/game-settings.c pioneers-0.12.4//common/gtk/game-settings.c
+--- pristine_pioneers//common/gtk/game-settings.c	2010-05-13 18:48:22.000000000 -0400
++++ pioneers-0.12.4//common/gtk/game-settings.c	2011-06-13 19:25:26.392288002 -0400
+@@ -27,6 +27,7 @@
+ static void game_settings_init(GameSettings * sg);
+ static void game_settings_change_players(GtkSpinButton * widget,
+ 					 GameSettings * gs);
++static void game_settings_change_turn_timer(GtkSpinButton *widget, GameSettings *gs);
+ static void game_settings_change_victory_points(GtkSpinButton * widget,
+ 						GameSettings * gs);
+ static void game_settings_check(GtkButton * widget, GameSettings * gs);
+@@ -98,7 +99,7 @@
+ 	GtkWidget *hbox;
+ 	GtkObject *adj;
+ 
+-	gtk_table_resize(GTK_TABLE(gs), 4, 2);
++	gtk_table_resize(GTK_TABLE(gs), 4, 3);
+ 	gtk_table_set_row_spacings(GTK_TABLE(gs), 3);
+ 	gtk_table_set_col_spacings(GTK_TABLE(gs), 5);
+ 
+@@ -164,6 +165,24 @@
+ 			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
+ 	gtk_widget_show(hbox);
+ 
++	/* Label for turn time limit */
++	label = gtk_label_new("Turn Time Limit (seconds)");
++	gtk_widget_show(label);
++	gtk_table_attach(GTK_TABLE(gs), label, 0, 1, 3, 4, GTK_FILL, GTK_FILL, 0, 0);
++	gtk_misc_set_alignment(GTK_MISC(label), 0, 0.5);
++
++	adj = gtk_adjustment_new(0, 0, 60*60, 1, 10, 0);
++	gs->timer_spin = gtk_spin_button_new(GTK_ADJUSTMENT(adj), 1, 0);
++	gtk_entry_set_alignment(GTK_ENTRY(gs->timer_spin), 1.0);
++	gtk_widget_show(gs->timer_spin);
++	gtk_spin_button_set_numeric(GTK_SPIN_BUTTON(gs->timer_spin), TRUE);
++	gtk_table_attach(GTK_TABLE(gs), gs->timer_spin, 1, 2, 3, 4,
++			 GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
++	g_signal_connect(G_OBJECT(gs->timer_spin), "value-changed",
++			 G_CALLBACK(game_settings_change_turn_timer), gs);
++	gtk_widget_set_tooltip_text(gs->timer_spin,
++				    "The maximum turn length, in seconds.  Set to 0 to disable the timer entirely.");
++
+ 	gs->players = 4;
+ 	gs->victory_points = 10;
+ 	game_settings_update(gs);
+@@ -181,6 +200,13 @@
+ 	return widget;
+ }
+ 
++static void game_settings_change_turn_timer(GtkSpinButton *widget, GameSettings *gs)
++{
++	gs->turn_time = gtk_spin_button_get_value_as_int(widget);
++	game_settings_update(gs);
++	g_signal_emit(G_OBJECT(gs), game_settings_signals[CHANGE], 0);
++}
++
+ /* Emits 'change-players' when the number of players has changed */
+ static void game_settings_change_players(GtkSpinButton * widget,
+ 					 GameSettings * gs)
+@@ -228,6 +254,20 @@
+ 	return gs->victory_points;
+ }
+ 
++/* Set the turn timer */
++void game_settings_set_turn_timer(GameSettings * gs,
++				      gint turn_time)
++{
++	gs->turn_time = turn_time;
++	game_settings_update(gs);
++}
++
++/* Get the turn timer */
++gint game_settings_get_turn_timer(GameSettings * gs)
++{
++	return gs->turn_time;
++}
++
+ static void game_settings_check(G_GNUC_UNUSED GtkButton * widget,
+ 				GameSettings * gs)
+ {
+@@ -244,11 +284,16 @@
+ 	g_signal_handlers_block_matched(G_OBJECT(gs->victory_spin),
+ 					G_SIGNAL_MATCH_DATA,
+ 					0, 0, NULL, NULL, gs);
++	g_signal_handlers_block_matched(G_OBJECT(gs->timer_spin),
++					G_SIGNAL_MATCH_DATA,
++					0, 0, NULL, NULL, gs);
+ 
+ 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(gs->players_spin),
+ 				  gs->players);
+ 	gtk_spin_button_set_value(GTK_SPIN_BUTTON(gs->victory_spin),
+ 				  gs->victory_points);
++	gtk_spin_button_set_value(GTK_SPIN_BUTTON(gs->timer_spin),
++				  gs->turn_time);
+ 
+ 	/* Reenable the signals */
+ 	g_signal_handlers_unblock_matched(G_OBJECT(gs->players_spin),
+@@ -257,4 +302,7 @@
+ 	g_signal_handlers_unblock_matched(G_OBJECT(gs->victory_spin),
+ 					  G_SIGNAL_MATCH_DATA,
+ 					  0, 0, NULL, NULL, gs);
++	g_signal_handlers_unblock_matched(G_OBJECT(gs->timer_spin),
++					  G_SIGNAL_MATCH_DATA,
++					  0, 0, NULL, NULL, gs);
+ }
+diff -urN pristine_pioneers//common/gtk/game-settings.h pioneers-0.12.4//common/gtk/game-settings.h
+--- pristine_pioneers//common/gtk/game-settings.h	2009-08-29 07:00:09.000000000 -0400
++++ pioneers-0.12.4//common/gtk/game-settings.h	2011-06-13 16:55:08.442288004 -0400
+@@ -32,6 +32,9 @@
+ 
+ 	guint players;		/* The number of players */
+ 	guint victory_points;	/* The points needed to win */
++
++	GtkWidget *timer_spin;
++	gint turn_time;
+ };
+ 
+ struct _GameSettingsClass {
+@@ -50,6 +53,8 @@
+ void game_settings_set_victory_points(GameSettings * gs,
+ 				      guint victory_points);
+ guint game_settings_get_victory_points(GameSettings * gs);
++void game_settings_set_turn_timer(GameSettings *gs, gint turn_time);
++gint game_settings_get_turn_timer(GameSettings *gs);
+ 
+ G_END_DECLS
+ #endif				/* __GAMESETTINGS_H__ */
+diff -urN pristine_pioneers//server/gtk/main.c pioneers-0.12.4//server/gtk/main.c
+--- pristine_pioneers//server/gtk/main.c	2010-10-26 11:24:09.000000000 -0400
++++ pioneers-0.12.4//server/gtk/main.c	2011-06-13 18:10:16.992287998 -0400
+@@ -189,6 +189,8 @@
+ 				  params->num_players);
+ 	game_settings_set_victory_points(GAMESETTINGS(game_settings),
+ 					 params->victory_points);
++	game_settings_set_turn_timer(GAMESETTINGS(game_settings),
++					 params->turn_time);
+ 	game_rules_set_victory_at_end_of_turn(GAMERULES(game_rules),
+ 					      params->
+ 					      check_victory_at_end_of_turn);
+@@ -268,6 +270,9 @@
+ 		cfg_set_victory_points(params,
+ 				       game_settings_get_victory_points
+ 				       (GAMESETTINGS(game_settings)));
++		cfg_set_turn_time(params,
++				       game_settings_get_turn_timer
++				       (GAMESETTINGS(game_settings)));
+ 		params->check_victory_at_end_of_turn =
+ 		    game_rules_get_victory_at_end_of_turn(GAMERULES
+ 							  (game_rules));
+@@ -597,9 +602,10 @@
+ 	temp = config_get_int("game/victory-points", &default_returned);
+ 	if (!default_returned)
+ 		cfg_set_victory_points(params, temp);
+-	temp =
+-	    config_get_int("game/victory-at-end-of-turn",
+-			   &default_returned);
++	temp = config_get_int("game/turn-time", &default_returned);
++	if (!default_returned)
++		cfg_set_turn_time(params, temp);
++	temp = config_get_int("game/victory-at-end-of-turn", &default_returned);
+ 	if (!default_returned)
+ 		params->check_victory_at_end_of_turn = temp;
+ 	temp = config_get_int("game/sevens-rule", &default_returned);
+@@ -946,6 +952,9 @@
+ 	cfg_set_victory_points(params,
+ 			       game_settings_get_victory_points
+ 			       (GAMESETTINGS(game_settings)));
++	cfg_set_turn_time(params,
++			       game_settings_get_turn_timer
++			       (GAMESETTINGS(game_settings)));
+ 	params->check_victory_at_end_of_turn =
+ 	    game_rules_get_victory_at_end_of_turn(GAMERULES(game_rules));
+ 	cfg_set_sevens_rule(params,
+diff -urN pristine_pioneers//server/pregame.c pioneers-0.12.4//server/pregame.c
+--- pristine_pioneers//server/pregame.c	2010-05-13 10:25:21.000000000 -0400
++++ pioneers-0.12.4//server/pregame.c	2011-06-13 19:16:30.422288004 -0400
+@@ -521,6 +521,8 @@
+ 		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
+ 				     "player %d is %s\n", player->num,
+ 				     player->name);
++		player_send_uncached(player, FIRST_VERSION, LATEST_VERSION,
++				     "extension turn time limit is %d\n", game->params->turn_time);
+ 		break;
+ 
+ 	case SM_RECV:
+diff -urN pristine_pioneers//server/server.c pioneers-0.12.4//server/server.c
+--- pristine_pioneers//server/server.c	2010-05-25 13:07:43.000000000 -0400
++++ pioneers-0.12.4//server/server.c	2011-06-13 18:23:31.152288001 -0400
+@@ -457,6 +457,15 @@
+ 	params->victory_points = MAX(3, victory_points);
+ }
+ 
++void cfg_set_turn_time(GameParams *params, gint turn_time)
++{
++#ifdef PRINT_INFO
++	g_print("cfg_set_turn_time: %d\n", turn_time);
++#endif
++	g_return_if_fail(params != NULL);
++	params->turn_time = (turn_time == 0 ? -1 : turn_time);
++}
++
+ /** Attempt to find a game with @a title in @a directory.
+  *  @param title The game must match this title
+  *  @param directory Look in this directory for *.game files
+diff -urN pristine_pioneers//server/server.h pioneers-0.12.4//server/server.h
+--- pristine_pioneers//server/server.h	2010-10-13 06:06:42.000000000 -0400
++++ pioneers-0.12.4//server/server.h	2011-06-13 17:32:18.242288003 -0400
+@@ -258,6 +258,7 @@
+ void cfg_set_num_players(GameParams * params, gint num_players);
+ void cfg_set_sevens_rule(GameParams * params, gint sevens_rule);
+ void cfg_set_victory_points(GameParams * params, gint victory_points);
++void cfg_set_turn_time(GameParams * params, gint turn_time);
+ void cfg_set_terrain_type(GameParams * params, gint terrain_type);
+ void cfg_set_tournament_time(GameParams * params, gint tournament_time);
+ void cfg_set_quit(GameParams * params, gboolean quitdone);
