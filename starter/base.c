@@ -57,7 +57,8 @@ int main( int   argc,
      * from the command line and are returned to the application. */
     gtk_init (&argc, &argv);
 
-GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
+
+	GtkOSXApplication *theApp = g_object_new(GTK_TYPE_OSX_APPLICATION, NULL);
 
     /* Create a new window */
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -132,11 +133,14 @@ gtk_window_set_default_size(GTK_WINDOW(window), 290, 200);
 
     /* Always remember this step, this tells GTK that our preparation for
      * this button is complete, and it can now be displayed. */
+
     gtk_widget_show(button);
 
     gtk_widget_show(box1);
 
 	gtk_widget_show(window);
+
+	gtk_osxapplication_ready(theApp);
     /* Rest in gtk_main and wait for the fun to begin! */
     gtk_main ();
 

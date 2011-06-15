@@ -111,6 +111,14 @@
     ${project}/pioneers.icns
   </data>
 
+  <data dest="${bundle}/Contents/Resources/share/games/pioneers/themes/4th-Edition">
+    ${project}/4th-Edition
+  </data>
+
+  <data dest="${bundle}/Contents/Resources">
+    ${project}/accel_map
+  </data>
+
   <data dest="${bundle}/Contents/MacOS">
     ${prefix}/bin/pioneer*
   </data>
